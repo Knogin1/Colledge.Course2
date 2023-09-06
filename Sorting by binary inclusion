@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+  srand(time(NULL));
+  int a;
+  int max;
+  int min;
+  
+  printf("Кол-во чисел: ");
+  scanf("%d",&a);
+  
+  printf("Диапазон: \n    От: ");
+  scanf("%d", &min);
+  printf("    До: ");
+  scanf("%d", &max);
+
+  int A[a];
+  
+  printf("\n До сортировки: ");
+  
+  for (int i = 0; i < a; i++){
+    A[i] = rand()%(max - min + 1) + min;
+    printf("%d ",A[i]);
+  }
+ 
+  int ind;
+  int boof;
+  
+  for (int i = 0; i < a; i++ ){
+    max = 102;
+    for (int s = i; s < a; s++){
+      if (A[s] < max){
+        ind = s;
+        max = A[s];
+      }
+    }
+  
+    boof = A[i];
+    A[i] = A[ind];
+    A[ind] = boof;
+  }
+
+  puts("\n");
+  printf("После сортировки: ");
+  
+  for (int i = 0; i < a; i++){
+    printf("%d ",A[i]);
+  }
+  
+}
