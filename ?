@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    system("chcp 1251");
+    srand(time(NULL));
+
+    int boof;
+
+    int a;
+    int max;
+    int min;
+
+    printf("Кол-во чисел: ");
+    scanf("%d",&a);
+
+    printf("Диапазон: \n    От: ");
+    scanf("%d", &min);
+    printf("    До: ");
+    scanf("%d", &max);
+
+    int A[a];
+
+    printf("\n До сортировки: ");
+
+    //Заполнение рандомное
+    for (int i = 0; i < a; i++){
+        A[i] = rand()%(max - min + 1) + min;
+        printf("%d ",A[i]);
+    }
+
+    int left, right, middle;
+
+    for (int s = 0; s < a ; s++){
+        boof = A[s];
+        left = 0;
+        right = s;
+
+        while(left < right){
+            middle = (left+right)/2;
+
+            if (boof < A[middle]){
+                right = middle-1;
+            }
+            else{
+                left = middle+1;
+            }
+
+        for (int i = right; i > left; i--){
+            A[i] = A[i - 1];
+        }
+        A[left] = boof;
+        }
+    }
+
+    puts("\nПосле сортировки: ");
+    for (int i = 0; i < a; i++){
+        printf("%d ",A[i]);
+    }
+
+}
+
