@@ -14,10 +14,7 @@ int main(){
     printf("Кол-во чисел: ");
     scanf("%d",&a);
 
-    printf("Диапазон: \n    От: ");
-    scanf("%d", &min);
-    printf("    До: ");
-    scanf("%d", &max);
+
 
     int A[a];
 
@@ -25,33 +22,30 @@ int main(){
 
     //Заполнение рандомное
     for (int i = 0; i < a; i++){
-        A[i] = rand()%(max - min + 1) + min;
+        A[i] = rand()%10 + 1;
         printf("%d ",A[i]);
     }
 
     int left, right, middle;
 
-    for (int s = 0; s < a ; s++){
-        boof = A[s];
-        left = 0;
-        right = s;
+for (int s = 1; s<a; s++){ 
+    boof = A[s];
+    left = 0;
+    right = s-1;
 
-        while(left < right){
-            middle = (left+right)/2;
+    while(left<=right){
+        middle = (left + right) / 2; 
 
-            if (boof < A[middle]){
-                right = middle-1;
-            }
-            else{
-                left = middle+1;
-            }
-
-        for (int i = right; i > left; i--){
-            A[i] = A[i - 1];
+        if (boof < A[middle]){
+            right = middle-1;
         }
-        A[left] = boof;
+        else{
+            left = middle+1;
         }
     }
+    for (int i = s; i > left; i--)
+        A[i] = A[i-1];
+        A[left] = boof;
 
     puts("\nПосле сортировки: ");
     for (int i = 0; i < a; i++){
@@ -59,4 +53,5 @@ int main(){
     }
 
 }
+
 
