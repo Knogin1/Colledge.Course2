@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    system("chcp 1251");
+    srand(time(NULL));
+
+    int ind,max,boof,a, mid;
+
+    printf("Кол-во чисел: ");
+    scanf("%d",&a);
+
+    int A[a];
+    mid = a/2;
+
+    printf("\n\nДо сортировки: ");
+
+    //Заполнение рандомное
+    for (int i = 0; i < a; i++){
+        A[i] = rand()%10 + 1;
+        printf("%d ",A[i]);
+    }
+
+    //////////////////////////
+    // 4 - sort
+    for (int s = 0; s < mid; s++ ){
+        if (A[s] > A[mid+s]){
+            boof = A[s];
+            A[s] = A[mid + s];
+            A[mid + s] = boof;
+        }
+    }
+
+     printf("\n\nПосле 4 - cортировки: ");
+    for (int i = 0; i < a; i++){
+        printf("%d ",A[i]);
+    }
+
+    // 2 - sort
+    for (int i = 0; i < a; i++){
+        max = 102;
+        for (int s = i; s < a; s += 2 ){
+            if (A[s] < max){
+                ind = s;
+                max = A[s];
+            }
+        }
+
+        boof = A[i];
+        A[i] = A[ind];
+        A[ind] = boof;
+    }
+
+    printf("\n\nПосле 2 - сортировки: ");
+    for (int i = 0; i < a; i++){
+        printf("%d ",A[i]);
+
+    // 1 - sort
+    for (int i = 0; i < a; i++ ){
+        max = 102;
+        for (int s = i; s < a; s++){
+            if (A[s] < max){
+                ind = s;
+                max = A[s];
+            }
+        }
+
+        boof = A[i];
+        A[i] = A[ind];
+        A[ind] = boof;
+    }
+}
+    printf("\n\nПосле 1 - сортировки: ");
+    for (int i = 0; i < a; i++){
+        printf("%d ",A[i]);
+    }
+}
