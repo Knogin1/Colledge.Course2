@@ -6,6 +6,7 @@ int main(){
     srand(time(NULL));
 
     int ind,max,boof,a, mid;
+    int h = 1;
 
     printf("Кол-во чисел: ");
     scanf("%d",&a);
@@ -22,55 +23,32 @@ int main(){
     }
 
     //////////////////////////
-    // 4 - sort
-    for (int s = 0; s < mid; s++ ){
-        if (A[s] > A[mid+s]){
-            boof = A[s];
-            A[s] = A[mid + s];
-            A[mid + s] = boof;
-        }
+
+    h = 1;
+
+    while (h < a/2){
+        h = 2*h + 1;
     }
 
-     printf("\n\nПосле 4 - cортировки: ");
-    for (int i = 0; i < a; i++){
-        printf("%d ",A[i]);
-    }
+    while (h >= 1){
+        for (int q = 1; q < h; q++ ){
 
-    // 2 - sort
-    for (int i = 0; i < a; i++){
-        max = 102;
-        for (int s = i; s < a; s += 2 ){
-            if (A[s] < max){
-                ind = s;
-                max = A[s];
+            ////Simple - include with step h
+            for (int s = h; s < a; s += h){
+                ind = s - h;
+                boof = A[s];
+                while((A[ind] > boof) && (ind >= h)){
+                    A[ind + h] = A[ind];
+                    ind -= h;
+                }
+                A[ind+h] = boof;
             }
+            /////
         }
-
-        boof = A[i];
-        A[i] = A[ind];
-        A[ind] = boof;
+        h = (h-1)/3;
     }
 
-    printf("\n\nПосле 2 - сортировки: ");
-    for (int i = 0; i < a; i++){
-        printf("%d ",A[i]);
-
-    // 1 - sort
-    for (int i = 0; i < a; i++ ){
-        max = 102;
-        for (int s = i; s < a; s++){
-            if (A[s] < max){
-                ind = s;
-                max = A[s];
-            }
-        }
-
-        boof = A[i];
-        A[i] = A[ind];
-        A[ind] = boof;
-    }
-}
-    printf("\n\nПосле 1 - сортировки: ");
+    printf("\n\nПосле сортировки: ");
     for (int i = 0; i < a; i++){
         printf("%d ",A[i]);
     }
