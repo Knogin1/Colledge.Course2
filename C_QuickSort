@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void swap(int a, int b) {
+    int boof = a;
+    a = b;
+    b = boof;
+}
+
+// функция для сортировки (shaker)
+void sort(int list[], int left, int right){
+    for (int s = left; s < right; s++){
+        //max
+        for (int i = left; i < right; i++){
+            if (list[i]<=list[i+1]){
+                continue;
+            }
+            else{
+                int boof = list[i];
+                list[i] = list[i+1];
+                list[i+1] = boof;
+            }
+        }
+
+        //min
+        for (int i = right-1; i>=left; i--){
+            if (list[i]>=list[i-1]){
+                continue;
+            }
+            else{
+                int boof = list[i];
+                list[i] = list[i-1];
+                list[i-1] = boof;
+            }
+        }
+    }
+}
+
+
+// Функция для разделения массива и возвращения индекса опорного элемента
+int drob(int list[], int low, int high) {
+    int op = list[high]; // выбираем последний элемент в качестве опорного
+    int ind = (low - 1); // индекс меньшего элемента
+
+    for (int s = low; s <= high - 1; s++) {
+        // Если текущий элемент меньше или равен опорному
+        if (list[s] <= op) {
+            ind++; // увеличиваем индекс меньшего элемента
+            swap(list[ind], list[s]);
+        }
+    }
+    swap(list[ind + 1], list[high]);
+    return (ind + 1); // отсортированный край
+}
+
+// Основная функция быстрой сортировки
+void quickSort(int list[], int low, int high) {
+    if (low < high) {
+        // pi - индекс опорного элемента, list[pi] находится на правильной позиции
+        int pi = drob(list, low, high);
+
+        // Рекурсивно сортируем элементы перед опорным и после опорного
+        sort(list, low, pi - 1);
+        sort(list, pi + 1, high);
+    }
+}
+
+int main(){
+    system("chcp 1251");
+    srand(time(NULL));
+
+    int boof;
+    int a;
+
+    printf("Кол-во чисел: ");
+    scanf("%d",&a);
+
+    int A[a];
+
+    printf("\n\nДо сортировки: ");
+
+    //Заполнение рандомное
+    for (int i = 0; i < a; i++){
+        A[i] = rand()%10 + 1;
+        printf("%d ",A[i]);
+    }
+
+    quickSort(A, 0, a);
+
+    printf("\n\nПосле сортировки: ");
+    for (int i = 0; i < a; i++){
+        printf("%d ",A[i]);
+    }
+}
