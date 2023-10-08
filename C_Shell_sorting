@@ -5,14 +5,13 @@ int main(){
     system("chcp 1251");
     srand(time(NULL));
 
-    int ind,max,boof,a, mid;
-    int h = 1;
+    int boof,a;
 
     printf("Кол-во чисел: ");
     scanf("%d",&a);
 
+    int middle = a/2;
     int A[a];
-    mid = a/2;
 
     printf("\n\nДо сортировки: ");
 
@@ -22,30 +21,14 @@ int main(){
         printf("%d ",A[i]);
     }
 
-    //////////////////////////
-
-    h = 1;
-
-    while (h < a/2){
-        h = 2*h + 1;
-    }
-
-    while (h >= 1){
-        for (int q = 1; q < h; q++ ){
-
-            ////Simple - include with step h
-            for (int s = h; s < a; s += h){
-                ind = s - h;
-                boof = A[s];
-                while((A[ind] > boof) && (ind >= h)){
-                    A[ind + h] = A[ind];
-                    ind -= h;
-                }
-                A[ind+h] = boof;
+    for (int s = middle; s > 0; s /= 2) { //Уменьшаем разряд сортировки
+        for (int i = s; i < a; i++) { //Перебор массива, который сортируем
+            for (int j = i - s; j >= 0 && A[j] > A[j + s]; j -= s) { //Вставки
+                boof = A[j];
+                A[j] = A[j + s];
+                A[j + s] = boof;
             }
-            /////
         }
-        h = (h-1)/3;
     }
 
     printf("\n\nПосле сортировки: ");
@@ -53,3 +36,7 @@ int main(){
         printf("%d ",A[i]);
     }
 }
+
+// Большой массив делим пополам, чтоб определить шаг
+// i - отсортированная часть, идёт вправо
+// j - сортировка с шагом, идёт влево, но сортирует вправо
