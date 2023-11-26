@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct list {
+    int data;
+    struct list* next;
+};
+
+struct list* t, * p, * head = NULL, * i;
+
+struct list* create_list() {
+    int k;
+    printf("Введите число:\n");
+    scanf("%d", &k);
+    p = (struct list*)malloc(sizeof(struct list));
+    p->data = k;
+    p->next = NULL;
+    head = p;
+    printf("p->data = %d\n", p->data);
+    return head;
+}
+
+struct list* deletee(int k) {
+    t = head;
+    if (t->data == k) {
+        head = t->next;
+        free(t);
+        printf("Элемент %d удален из списка.\n", k);
+    } else {
+        while (t->next != NULL) {
+            if (t->next->data == k) {
+                p = t->next;
+                t->next = p->next;
+                free(p);
+                printf("Элемент %d удален из списка.\n", k);
+                return head;
+            }
+            t = t->next;
+        }
+        printf("Элемент %d не найден в списке.\n", k);
+    }
+    return head;
+}
+
+struct list* new_element(int k) {
+    struct list* p = (struct list*)malloc(sizeof(struct list));
+    p->data = k;
+    p->next = NULL;
+
+    if (head == NULL || k < head->data) {
+        p->next = head;
+        head = p;
+        printf("p->data = %d\n", p->data);
+        return head;
+    }
+
+    struct list* current = head;
+    while (current->next != NULL && k > current->next->data) {
+        current = current->next;
+    }
+    p->next = current->next;
+    current->next = p;
+
+    printf("p->data = %d\n", p->data);
+    return head;
+}
+
+bool finder(int k) {
+    t = head;
+    while (t != NULL) {
+        if (t->data == k) {
+            return true;
+        }
+        t = t->next;
+    }
+    return false;
+}
+
+void prnt(struct list* head) {
+    t = head;
+    printf("Список:\n");
+    while (t != NULL) {
+        printf("%d ", t->data);
+        t = t->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    system("chcp 1251");
+    int v = 0;
+    while (v != 6) {
+        printf("1. Создать список.\n");
+        printf("2. Добавить элемент в список. \n");
+        printf("3. Удалить элемент из списка. \n");
+        printf("4. Проверить наличие элемента в списке.\n");
+        printf("5. Вывести весь список на экран. \n");
+        printf("6. Закончить работу со списком. \n");
+        scanf("%d", &v);
+        switch (v) {
+            case 1:
+                head = create_list();
+                break;
+            case 2: {
+                int k;
+                printf("Введите число:\n");
+                scanf("%d", &k);
+                if (!finder(k)) {
+                    head = new_element(k);
+                }
+                break;
+            }
+            case 3: {
+                int k;
+                printf("Какой элемент удалить?\n");
+                scanf("%d", &k);
+                if (finder(k)) {
+                    head = deletee(k);
+                } else {
+                    printf("Элемент %d не найден в списке.\n", k);
+                }
+                break;
+            }
+            case 4: {
+                int k;
+                printf("Какой элемент проверить?\n");
+                scanf("%d", &k);
+                if (finder(k)) {
+                    printf("Элемент %d найден в списке.\n", k);
+                } else {
+                    printf("Элемент %d не найден в списке.\n", k);
+                }
+                break;
+            }
+            case 5:
+                prnt(head);
+                break;
+        }
+    }
+    return 0;
+}
