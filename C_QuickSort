@@ -1,94 +1,63 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-void swap(int a, int b) {
-    int boof = a;
-    a = b;
-    b = boof;
+void swap (int *x, int *y){
+    int boof =*x;
+    *x=*y;
+    *y= boof;
 }
 
-// функция для сортировки (shaker)
-void sort(int list[], int left, int right){
-    for (int s = left; s < right; s++){
-        //max
-        for (int i = left; i < right; i++){
-            if (list[i]<=list[i+1]){
-                continue;
-            }
-            else{
-                int boof = list[i];
-                list[i] = list[i+1];
-                list[i+1] = boof;
-            }
+void quickSort(int arr[], int n) {
+    if (n <= 1){
+        return(0);
+
+    }
+
+    int pivot = arr[n / 2]; //mid
+    int leftIndex, rightIndex;
+
+    for (leftIndex = 0, rightIndex = n - 1;; leftIndex++, rightIndex--) {
+        while (arr[leftIndex] < pivot){
+            leftIndex++;
         }
 
-        //min
-        for (int i = right-1; i>=left; i--){
-            if (list[i]>=list[i-1]){
-                continue;
-            }
-            else{
-                int boof = list[i];
-                list[i] = list[i-1];
-                list[i-1] = boof;
-            }
+        while (arr[rightIndex] > pivot){
+            rightIndex--;
         }
-    }
-}
 
-
-// Функция для разделения массива и возвращения индекса опорного элемента
-int drob(int list[], int low, int high) {
-    int op = list[high]; // выбираем последний элемент в качестве опорного
-    int ind = (low - 1); // индекс меньшего элемента
-
-    for (int s = low; s <= high - 1; s++) {
-        // Если текущий элемент меньше или равен опорному
-        if (list[s] <= op) {
-            ind++; // увеличиваем индекс меньшего элемента
-            swap(list[ind], list[s]);
+        if (leftIndex >= rightIndex){
+            break;
         }
+        swap(&arr[leftIndex], &arr[rightIndex]);
     }
-    swap(list[ind + 1], list[high]);
-    return (ind + 1); // отсортированный край
-}
 
-// Основная функция быстрой сортировки
-void quickSort(int list[], int low, int high) {
-    if (low < high) {
-        // pi - индекс опорного элемента, list[pi] находится на правильной позиции
-        int pi = drob(list, low, high);
-
-        // Рекурсивно сортируем элементы перед опорным и после опорного
-        sort(list, low, pi - 1);
-        sort(list, pi + 1, high);
-    }
+    quickSort(arr, leftIndex);
+    quickSort(arr + leftIndex, n - leftIndex);
 }
 
 int main(){
-    system("chcp 1251");
-    srand(time(NULL));
+    system ("chcp 1251");
+    srand (time(NULL));
 
-    int boof;
     int a;
-
-    printf("Кол-во чисел: ");
-    scanf("%d",&a);
+    printf("Введите размер массива: ");
+    scanf("%d", &a);
 
     int A[a];
 
-    printf("\n\nДо сортировки: ");
+    printf("\nДо сортировки: ");
 
-    //Заполнение рандомное
-    for (int i = 0; i < a; i++){
-        A[i] = rand()%10 + 1;
-        printf("%d ",A[i]);
+    for (int s = 0; s < a; s++){
+        A[s] = rand()%100 + 1;
+        printf("%d ", A[s]);
     }
 
-    quickSort(A, 0, a);
+    quickSort(A, a);
 
-    printf("\n\nПосле сортировки: ");
-    for (int i = 0; i < a; i++){
-        printf("%d ",A[i]);
+    printf("\nПосле сортировки: ");
+    for (int s = 0; s < a; s++){
+        printf("%d ", A[s]);
     }
 }
