@@ -1,0 +1,65 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+void swap (int *x, int *y){
+    int temp=*x;
+    *x=*y;
+    *y=temp;
+}
+
+void pros (int a[],int n, int i){
+    int ever=i;
+    int leftChild=i*2+1;
+    int rightChild=i*2+2;
+
+    if (leftChild < n && a[leftChild]>a[ever]){
+        ever=leftChild;
+    }
+
+    if (rightChild < n && a[rightChild]>a[ever]){
+        ever=rightChild;
+    }
+
+    if (ever !=i){
+        swap(&a[i],&a[ever]);
+        pros(a,n,ever);
+    }
+}
+
+void heapSort (int a[],int n){
+    for (int i=n/2-1;i>=0;i--){
+        pros(a,n,i);
+    }
+    for (int i=n-1;i>0;i--){
+        swap (&a[0],&a[i]);
+        pros(a,i,0);
+    }
+}
+
+int main(){
+    system ("chcp 1251");
+    srand (time(NULL));
+
+    int a;
+    printf("Введите размер массива: ");
+    scanf("%d", &a);
+
+    int A[a];
+
+    printf("\nДо сортировки: ");
+
+    for (int s = 0; s < a; s++){
+        A[s] = rand()%100 + 1;
+        printf("%d ", A[s]);
+    }
+
+    heapSort(A, a);
+
+    printf("\nПосле сортировки: ");
+    for (int s = 0; s < a; s++){
+        printf("%d ", A[s]);
+    }
+}
