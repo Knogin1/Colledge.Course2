@@ -11,6 +11,7 @@ struct list* t, * p, * head = NULL, * i;
 
 struct list* create_list() {
     int k;
+
     printf("Введите число:\n");
     scanf("%d", &k);
     p = (struct list*)malloc(sizeof(struct list));
@@ -106,8 +107,15 @@ int main() {
                 int k;
                 printf("Введите число:\n");
                 scanf("%d", &k);
-                if (!finder(k)) {
-                    head = new_element(k);
+                if (!finder(k) && head == NULL) {
+                    printf("Список не создан\n");
+                }
+                else if (finder(k)){
+                    printf("Такой элемент уже есть\n");
+                }
+
+                else{
+                    new_element(k);
                 }
                 break;
             }
