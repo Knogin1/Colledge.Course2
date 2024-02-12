@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct link {
+    struct element *target;
+    struct link *next;
+} link;
+
+
+typedef struct element {
+    int num;
+    int cal;
+    struct element *next;
+    struct link *links;
+} element;
+
+
+element *create(int num) {
+    element *e = (element *)malloc(sizeof(element));
+    e->num = num;
+    e->cal = 0;
+    e->next = NULL;
+    e->links = NULL;
+    return e;
+}
+
+
+void add_link(element *graph, int source, int target) {
+    element *source_element = graph;
+    element *target_element = graph;
+
+
+    while (source_element != NULL && source_element->num != source) {
+        source_element = source_element->next;
+    }
+
+    while (target_element != NULL && target_element->num != target) {
+        target_element = target_element->next;
+    }
+
+    if (source_element == NULL || target_element == NULL) {
+        printf("Ошибка: Не найдены элементы для добавления ссылки.\n");
+        return;
+    }
+
+    link *new_link = (link *)malloc(sizeof(link));
+    new_link->target = target_element;
+    new_link->next = source_element->links;
+    source_element->links = new_link;
+
+
+    target_element->cal++;
+}
+void delete_links(element *graph, element *target) {
+    element *current = graph;
+    while (current != NULL) {
+        link *prev_link = NULL;
+        link *current_link = current->links;
+
+        while (current_link != NULL) {
+            if (current_link->target == target) {
+                if (prev_link != NULL) {
+                    prev_link->next = current_link->next;
+                } else {
+                    current->links = current_link->next;
+                }
+                free(current_link);
+                break;
+            }
+            prev_link = current_link;
+            current_link = current_link->next;
+        }
+        current = current->next;
+    }
+}
+bool isGraphCycle(element *graph){
+  while(graph->next != NULL){
+    
+  }
+}
+void topological_sort(element *graph) {
+    printf("Топологический порядок: ");
+    while (graph != NULL) {
+        element *current = graph;
+        element *prev = NULL;
+
+        while (current != NULL) {
+            if (current->cal == 0) { 
+                printf("%d ", current->num);
+
+                link *temp = current->links;
+                while (temp != NULL) {
+                    temp->target->cal--;
+                    temp = temp->next;
+                }
+
+                if (prev != NULL) {
+                    prev->next = current->next;
+                } else {
+                    graph = current->next;
+                }
+                free(current);
+                break;
+            }
+            prev = current;
+            current = current->next;
+        }
+    }
+    printf("\n");
+}
+
+void inputgraph() {
+    printf("Введите количество элементов в графе: ");
+    int num;
+    scanf("%d", &num);
+
+    element *graph = NULL;
+    element *last = NULL; 
+
+
+    for (int i = 1; i <= num; i++) {
+        element *new_element = create(i);
+        if (graph == NULL) {
+            graph = new_element;
+            last = new_element;
+        } else {
+            last->next = new_element;
+            last = new_element;
+        }
+    }
+
+
+    for (int i = 1; i <= num; i++) {
+        printf("Введите количество элементов, указывающих на элемент %d: ", i);
+        int num_links;
+        scanf("%d", &num_links);
+
+        for (int j = 0; j < num_links; j++) {
+            printf("Введите номер исходного элемента: ");
+            int source;
+            scanf("%d", &source);
+            add_link(graph, source, i);
+        }
+    }
+
+    topological_sort(graph);
+}
+
+int main() {
+    inputgraph();
+    return 0;
+}
