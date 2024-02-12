@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <locale.h>
 
 typedef struct link {
     struct element *target;
@@ -76,7 +77,7 @@ void delete_links(element *graph, element *target) {
 }
 bool isGraphCycle(element *graph){
   while(graph->next != NULL){
-    
+
   }
 }
 void topological_sort(element *graph) {
@@ -86,7 +87,7 @@ void topological_sort(element *graph) {
         element *prev = NULL;
 
         while (current != NULL) {
-            if (current->cal == 0) { 
+            if (current->cal == 0) {
                 printf("%d ", current->num);
 
                 link *temp = current->links;
@@ -116,7 +117,7 @@ void inputgraph() {
     scanf("%d", &num);
 
     element *graph = NULL;
-    element *last = NULL; 
+    element *last = NULL;
 
 
     for (int i = 1; i <= num; i++) {
@@ -148,6 +149,8 @@ void inputgraph() {
 }
 
 int main() {
+    system ("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
     inputgraph();
     return 0;
 }
