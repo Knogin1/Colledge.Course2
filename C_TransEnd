@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+void matrix(int len, int Arr[len][len]){
+    puts("");
+    printf("    ");
+    for (int s = 0; s<len;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<len;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<len;i++){
+            printf("%d ",Arr[s][i]);
+        }
+        puts("");
+    }
+
+}
+
+int main(){
+    system("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
+
+    int n;
+    printf("Кол-во вершин: ");
+    scanf("%d",&n);
+    int A[n][n];
+
+    for (int s = 0;s<n;s++){for (int i = 0;i<n;i++){A[s][i] = 0;}} //Заполнение нулями
+
+    char num[3];
+    int x,y;
+    while(1){
+        printf("Пары вершин: ");
+        scanf("%s",&num);
+
+        if (num[0] == '0'){
+            break;
+        }
+
+        y = num[0]-'0';
+        x = num[1]-'0';
+        A[y-1][x-1] = 1;
+    }
+
+    puts("\nДо замыкания: ");
+    matrix(n,A);
+
+    //Замыкание
+    for (int s = 0; s<n; s++){
+        for(int i = 0; i<n; i++){
+            for (int q = 0; q<n; q++){
+                 if (A[i][s] && A[s][q] && A[i][q] == 0) {
+                    A[i][q] = 1;
+                 }
+            }
+        }
+    }
+    puts("\nПосле замыкания: ");
+    matrix(n,A);
+    return 0;
+}
