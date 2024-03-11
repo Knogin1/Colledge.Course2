@@ -1,74 +1,85 @@
-c
 #include <stdio.h>
-#include <limits.h>
+#include <stdlib.h>
+#include <locale.h>
 
-#define V 6
+int main(){
+    system("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
 
-int minDistance(int dist[], int sptSet[]){
-    int min = INT_MAX, min_index;
+    int n;
+    printf("Кол-во вершин: ");
+    scanf("%d",&n);
+    int A[n][n];
 
-    for (int v = 0; v < V; v++)
-    {
-        if (sptSet[v] == 0 && dist[v] <= min)
-        {
-            min = dist[v];
-            min_index = v;
+    for (int s = 0;s<n;s++){for (int i = 0;i<n;i++){A[s][i] = 0;}} //Заполнение нулями
+
+    //Заполнение матрицы смежностей
+    char num[3];
+    int x,y, w;
+    while(1){
+        printf("\nПары вершин: ");
+        scanf("%s",&num);
+
+        if (num[0] == '0'){
+            break;
         }
+
+        printf("Вес: ");
+        scanf("%d",&w);
+
+        y = num[0]-'0';
+        x = num[1]-'0';
+        A[y-1][x-1] = w;
     }
 
-    return min_index;
-}
-
-void printSolution(int dist[])
-{
-    printf("Vertex \t Distance from Source\n");
-    for (int i = 0; i < V; i++)
-    {
-        printf("%d \t %d\n", i, dist[i]);
+    //Вывод матрицы смежностей
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
     }
-}
-
-void dijkstra(int graph[V][V], int src)
-{
-    int dist[V]; 
-    int sptSet[V];
-
-    for (int i = 0; i < V; i++)
-    {
-        dist[i] = INT_MAX;
-        sptSet[i] = 0;
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            printf("%d ",A[s][i]);
+        }
+        puts("");
     }
 
-    dist[src] = 0;
+    int dist[n];
+    for (int s = 0;s<n;s++){dist[s] = 100;}
+    dist[0] = 0;
 
-    for (int count = 0; count < V - 1; count++)
-    {
-        int u = minDistance(dist, sptSet);
-        sptSet[u] = 1;
+    int min;
+    int min_index;
 
-        for (int v = 0; v < V; v++)
-        {
-            if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX 
-                && dist[u] + graph[u][v] < dist[v])
+    int went[n];
+    for (int s = 0;s<n;s++){went[s] = 0;}
+
+    for(int s = 0; s<n; s++){
+        min = 100;
+        for (int v = 0; v < n; v++){
+            if (went[v] == 0 && dist[v] <= min){
+                min = dist[v];
+                min_index = v;
+            }
+         //went[min_index] = 1;
+
+        }
+        went[min_index] = 1;
+        for (int v = 0; v < n; v++){
+            if (!went[v] && A[min_index][v] && dist[min_index] != 100
+                && dist[min_index] + A[min_index][v] < dist[v])
             {
-                dist[v] = dist[u] + graph[u][v];
+                dist[v] = dist[min_index] + A[min_index][v];
             }
         }
     }
 
-    printSolution(dist);
-}
-
-int main()
-{
-    int graph[V][V] = {{0, 7, 9, 0, 0, 14},
-                       {7, 0, 10, 15, 0, 0},
-                       {9, 10, 0, 11, 0, 2},
-                       {0, 15, 11, 0, 6, 0},
-                       {0, 0, 0, 6, 0, 9},
-                       {14, 0, 2, 0, 9, 0}};
-
-    dijkstra(graph, 0);
+    for(int s = 0; s<n; s++){
+        printf("\nПуть из %d в %d равен %d",1,s+1,dist[s]);
+    }
 
     return 0;
 }
