@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int boof = 0;
+int find(int e, int list[e][e], int X, int Y, boof = 0;){
+    int count = 0;
+
+    for (int s = Y; s<e; s++){
+        for(int i = X; i<e; i++){
+            if(list[s][i]){
+               list[i][s] = 0;
+               if (!boof){
+                    count++
+                    boof = 1;
+               }
+               X = i; Y = s
+               find(n,list[e][e], X, Y);
+               
+               
+            }
+
+    }
+    return count;
+}
+
+int main(){
+    system("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
+
+    int n;
+    printf("Кол-во вершин: ");
+    scanf("%d",&n);
+    int A[n][n];
+
+    puts("");
+
+    for (int s = 0;s<n;s++){for (int i = 0;i<n;i++){A[s][i] = 0;}} //Заполнение нулями
+
+    //Заполнение матрицы смежностей
+    char num[3];
+    int x,y;
+    while(1){
+        printf("Пары вершин: ");
+        scanf("%s",&num);
+
+        if (num[0] == '0'){
+            break;
+        }
+
+        y = num[0]-'0';
+        x = num[1]-'0';
+        A[y-1][x-1] = 1;
+        A[x-1][y-1] = 1;
+    }
+
+      //Вывод матрицы смежностей
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            printf("%d ",A[s][i]);
+        }
+        puts("");
+    }
+
+    printf("\n%d",find(n,A,0,0));
+
+/*
+    int B[n];
+    for (int s = 0;s<n;s++){B[s] = s;} //Заполнение нулями
+    for (int s = 0;s<n;s++){printf("%d",B[s]);}
+*/
+    return 0;
+}
