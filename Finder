@@ -2,26 +2,29 @@
 #include <stdlib.h>
 #include <locale.h>
 
-int boof = 0;
-int find(int e, int list[e][e], int X, int Y, boof = 0;){
-    int count = 0;
+int used[100];
+void DFS(int size, int MATRIX[size][size], int v) {
+    used[v] = 1;
 
-    for (int s = Y; s<e; s++){
-        for(int i = X; i<e; i++){
-            if(list[s][i]){
-               list[i][s] = 0;
-               if (!boof){
-                    count++
-                    boof = 1;
-               }
-               X = i; Y = s
-               find(n,list[e][e], X, Y);
-               
-               
-            }
-
+    for (int i = 0; i < size; i++) {
+        if (MATRIX[v][i] && !used[i]) {
+            DFS(size,MATRIX,i);
+        }
     }
-    return count;
+}
+
+void FCC(int size, int MATRIX[size][size]) {
+    for (int i = 0; i < size; i++) {
+        used[i] = 0;
+    }
+    int component = 1;
+    for (int i = 0; i < size; i++) {
+        if (!used[i]) {
+            DFS(size,MATRIX,i);
+            component++;
+        }
+    }
+    printf("Кол-во компонент: %d ", component-1);
 }
 
 int main(){
@@ -43,17 +46,14 @@ int main(){
     while(1){
         printf("Пары вершин: ");
         scanf("%s",&num);
-
         if (num[0] == '0'){
             break;
         }
-
         y = num[0]-'0';
         x = num[1]-'0';
         A[y-1][x-1] = 1;
         A[x-1][y-1] = 1;
     }
-
       //Вывод матрицы смежностей
     puts("");
     printf("    ");
@@ -68,13 +68,8 @@ int main(){
         }
         puts("");
     }
+    puts("\n");
 
-    printf("\n%d",find(n,A,0,0));
-
-/*
-    int B[n];
-    for (int s = 0;s<n;s++){B[s] = s;} //Заполнение нулями
-    for (int s = 0;s<n;s++){printf("%d",B[s]);}
-*/
+    FCC(n,A);
     return 0;
 }
