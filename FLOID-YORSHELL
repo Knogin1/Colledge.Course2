@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+int max = 100;
+
+int main(){
+    system("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
+
+    int n;
+    printf("Кол-во вершин: ");
+    scanf("%d",&n);
+    int A[n][n];
+
+    for (int s = 0;s<n;s++){
+            for (int i = 0;i<n;i++){
+                if (s!=i){
+                    A[s][i] = max;
+                }
+                else{
+                    A[s][i] = 0;
+                }
+            }
+    } //Заполнение нулями
+
+    //Заполнение матрицы смежностей
+    char num[3];
+    int x,y,w;
+    while(1){
+        puts("");
+        printf("Пары вершин: ");
+        scanf("%s",&num);
+
+        if (num[0] == '0'){
+            break;
+        }
+
+        printf("Вес дуги: ");
+        scanf("%d", &w);
+
+        y = num[0]-'0';
+        x = num[1]-'0';
+        if (y == x){
+            w = 0;
+        }
+        A[y-1][x-1] = w;
+    }
+
+    //Вывод матрицы смежностей
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            if (A[s][i]<max){
+                printf("%d ",A[s][i]);
+            }
+            else{
+                printf("M ");
+            }
+        }
+        puts("");
+    }
+    //******************************************************
+    for (int k = 0; k<n; k++){ //k++??
+        for(int i = 0; i<n; i++){ //i++?
+            for(int j = 0; j<n; j++){ //j++?
+                if(A[i][k] + A[k][j] < A[i][j]){
+                    A[i][j] = A[i][k] + A[k][j];
+                }
+            }
+        }
+    }
+    //******************************************************
+
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            if (A[s][i]<max){
+                printf("%d ",A[s][i]);
+            }
+            else{
+                printf("M ");
+            }
+        }
+        puts("");
+    }
+    return 0;
+}
