@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+
+//НАДО ДОПИЛИТЬ. ЕСТЬ МАССИВ W, ГДЕ ВЕРШИНЫ СОРТИРНЫЕ, НАДО ПО КРАСКАЛУ ПРОГНАТЬ
+int main(){
+    system("chcp 1251");
+    setlocale(LC_ALL, "ru_RU. UTF-8");
+    system("color 0A");
+
+    int n;
+    printf("Кол-во вершин: ");
+    scanf("%d",&n);
+    int A[n][n];
+    int B[n][n];
+
+
+    for (int s = 0;s<n;s++){for (int i = 0;i<n;i++){A[s][i] = 0;}} //Заполнение нулями
+    for (int s = 0;s<n;s++){for (int i = 0;i<n;i++){B[s][i] = 0;}}
+
+
+    //Заполнение матрицы смежностей
+    char num[3];
+    int x,y, w;
+    int count = 0;
+    while(1){
+        printf("\nПары вершин: ");
+        scanf("%s",&num);
+
+        if (num[0] == '0'){
+            break;
+        }
+
+        printf("Вес: ");
+        scanf("%d",&w);
+
+        y = num[0]-'0';
+        x = num[1]-'0';
+        A[y-1][x-1] = w;
+        A[x-1][y-1] = w;
+        count++;
+    }
+
+    int W[count];
+    for (int s = 0;s<count;s++){W[s] = 0;}
+
+    //Вывод матрицы смежностей
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            printf("%d ",A[s][i]);
+        }
+        puts("");
+    }
+
+    int q = 0;
+    for (int s = 0; s<n; s++){
+        for(int i = s; i<n; i++){
+            if (A[s][i]){
+                W[q] = A[s][i];
+                q++;
+            }
+        }
+    }
+
+    int ind;
+    int boof;
+    for (int s = 0; s < count; s++){
+        //max
+        for (int i = 0; i < count; i++){
+            if (W[i]<=W[i+1]){
+                continue;
+            }
+            else{
+                boof = W[i];
+                W[i] = W[i+1];
+                W[i+1] = boof;
+            }
+        }
+
+        //min
+        for (int i = count; i>=0; i--){
+            if (W[i]>=W[i-1]){
+                continue;
+            }
+            else{
+                boof = W[i];
+                W[i] = W[i-1];
+                W[i-1] = boof;
+            }
+        }
+    }
+
+
+    puts("");
+    printf("    ");
+    for (int s = 0; s<n;s++){
+        printf("%d ",s+1);
+    }
+    puts("\n");
+    for (int s = 0;s<n;s++){
+        printf("%d   ",s+1);
+        for (int i = 0;i<n;i++){
+            printf("%d ",B[s][i]);
+        }
+        puts("");
+    }
+
+    return 0;
+}
